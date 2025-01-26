@@ -1,5 +1,5 @@
 // import { BookDocument } from "../models/Book.js";
-import User from "../models/User.js";
+import { User } from "../models/index.js";
 import { signToken } from '../services/auth.js';
 
 // interface IUser {
@@ -50,7 +50,7 @@ import { signToken } from '../services/auth.js';
 
 const resolvers = {
     Query: {
-        getSingleUser: async (_parent: unknown, args: { id?: string; username?: string }, context: { user: any }) => {
+        me: async (_parent: unknown, args: { id?: string; username?: string }, context: { user: any }) => {
         const { id, username } = args;
         const userId = context.user?._id || id;
     
@@ -67,8 +67,10 @@ const resolvers = {
     },
     
     Mutation: {
-        createUser: async (_parent: unknown, args: { username: string; email: string; password: string }) => {
-        const user = await User.create(args);
+        createUser: async (_parent: unknown, args: { input: { username: string; email: string; password: string } }) => {
+            let {input} = args; 
+            console.log(args);
+        const user = await User.create({...input});
     
         if (!user) {
             throw new Error('Something went wrong while creating the user!');

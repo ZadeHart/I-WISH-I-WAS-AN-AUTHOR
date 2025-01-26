@@ -46,7 +46,7 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
         throw new Error('Something went wrong!');
       }
 
-      Auth.login(data.login.token);
+      Auth.login(data.loginUser.token);
     } catch (err) {
       console.error(error);
       setShowAlert(true);
