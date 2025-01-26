@@ -3,38 +3,32 @@ import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
 
-interface JwtPayload {
-  _id: unknown;
-  username: string;
-  email: string;
-}
+export const authenticateToken = ({ req }: any) => {
+  let token = req.body.token || req.query.token || req.headers.authorization;
 
-const secretKey = process.env.JWT_SECRET_KEY || '';
-
-/**
- * Middleware to authenticate and extract the user from the token for GraphQL context.
- */
-export const authenticateToken = (authHeader?: string): JwtPayload | null => {
-  if (authHeader) {
-    const token = authHeader.split(' ')[1];
-
-    try {
-      const user = jwt.verify(token, secretKey) as JwtPayload;
-      return user; // Return the decoded token as user
-    } catch (err) {
-      console.error('Token verification failed:', err);
-      return null;
-    }
+  if (req.headers.authorization) {
+    token = token.split(' ').pop().trim();
   }
-  return null;
+
+  if (!token) {
+    return req;
+  }
+
+  try {
+    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
+    req.user = data;
+  } catch (err) {
+    console.log('Invalid token');
+  }
+
+  return req;
 };
 
-/**
- * Utility function to sign a JWT token.
- */
-export const signToken = (username: string, email: string, _id: unknown): string => {
+export const signToken = (username: string, email: string, _id: unknown) => {
   const payload = { username, email, _id };
-  return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+  const secretKey: any = process.env.JWT_SECRET_KEY;
+
+  return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
 };
 
 export class AuthenticationError extends GraphQLError {
