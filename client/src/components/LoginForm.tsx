@@ -36,7 +36,7 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
     try {
       const { data } = await loginUser({
         variables: {
-          username: userFormData.username,
+          // username: userFormData.username,
           email: userFormData.email,
           password: userFormData.password,
         },
@@ -58,27 +58,7 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
       password: '',
       savedBooks: [],
     })
-
-  //     const response = await loginUser(userFormData);
-
-  //     if (!response.ok) {
-  //       throw new Error('something went wrong!');
-  //     }
-
-  //     const { token } = await response.json();
-  //     Auth.login(token);
-  //   } catch (err) {
-  //     console.error(err);
-  //     setShowAlert(true);
-  //   }
-
-  //   setUserFormData({
-  //     username: '',
-  //     email: '',
-  //     password: '',
-  //     savedBooks: [],
-  //   });
-  // };
+  };
 
   return (
     <>
@@ -120,7 +100,6 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
       </Form>
     </>
   );
-};
 }
 
 export default LoginForm;

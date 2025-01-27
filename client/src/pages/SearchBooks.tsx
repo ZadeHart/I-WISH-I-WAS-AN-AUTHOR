@@ -58,6 +58,7 @@ const SearchBooks = () => {
         title: book.volumeInfo.title,
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
+        link: book.selfLink || '',
       }));
 
       setSearchedBooks(bookData);
@@ -80,8 +81,11 @@ const SearchBooks = () => {
     }
 
     try {
+
+      console.log('Heres bookToSave', {...bookToSave})
+
       const { data } = await saveBook({
-        variables: { book: bookToSave },
+        variables: { input: {...bookToSave} },
         context: {
           headers: {
             Authorization: `Bearer ${token}`,
