@@ -97,15 +97,18 @@ const resolvers = {
         return { token, user };
         },
     
-        saveBook: async (_parent: unknown, args: { book: any }, context: { user: any }) => {
+        saveBook: async (_parent: unknown, {input}: any, context: { user: any }) => {
         if (!context.user) {
             throw new Error('Unauthorized');
         }
     
         try {
+
+            console.log('Here are args', input)
+
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $addToSet: { savedBooks: args.book } },
+                { $addToSet: { savedBooks: input } },
                 { new: true, runValidators: true }
             );
             return updatedUser;

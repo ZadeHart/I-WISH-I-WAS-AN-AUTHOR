@@ -11,4 +11,5 @@ export interface GoogleAPIVolumeInfo {
 export interface GoogleAPIBook {
     id: string;
     volumeInfo: GoogleAPIVolumeInfo;
+    selfLink: string
 }

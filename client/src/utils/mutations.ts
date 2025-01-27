@@ -32,18 +32,21 @@ mutation CreateUser($input: AddUserInput!) {
 `;
 
 export const SAVE_BOOK = gql `
-    mutation Mutation($input: SaveBookInput) {
-        saveBook(input: $input) {
-            book {
-                _id
-                username
-                savedBooks {
-                    bookId
-                    title
-                    authors
-            }
-        }
+mutation SaveBook($input: SaveBookInput!) {
+  saveBook(input: $input) {
+    _id
+    username
+    email
+    bookCount
+    savedBooks {
+      bookId
+      authors
+      description
+      title
+      image
+      link
     }
+  }
 }
 `;
 
